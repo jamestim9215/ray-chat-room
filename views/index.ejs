@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>
+    <%= title %>
+  </title>
+
+  <!-- css link -->
+  <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" href="stylesheets/animate.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body>
+  <div class="newUser-cover">
+    <div class="newUser p-3">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 h5 text-green">
+            Please Enter Your Name
+          </div>
+          <div class="col-12 text-center">
+            <input type="text" class="form-control" name="userName" id="userName" placeholder="Enter Your Name...">
+            <div class="btn btn-outline-info startChatBtn mt-3">Start to chat</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="chat-div">
+          <div class="message">
+            <span class="float-right text-center closeBtn text-green mr-3 mt-3">
+              <i class="fa fa-times fa-2x"></i>
+            </span>
+            <div>
+              <div class="user-circle font-weight-bold mt-4 div-center">
+                R
+              </div>
+            </div>
+            <div class="text-center text-green mt-1">HI!
+              <span id="user"></span>
+            </div>
+            <!-- <div class="text-center text-white mt-1">ray.lin@gigabyte.com</div> -->
+            <div class="people-div mt-3">
+              <div class="p-2 text-green"> Online User </div>
+              <ul class="people">
+                <!-- <li class="li active"> -->
+                <!-- <span>James</span> -->
+                <!-- <span class="float-right">
+                    12:05PM
+                  </span>
+                  <div class="text-green mt-2">What are you getting... Oh, oops...</div> -->
+                <!-- </li> -->
+              </ul>
+            </div>
+          </div>
+          <div class="chat-box">
+            <div class="top-div">
+              <span class="user-circle font-weight-bold float-left">
+                R
+              </span>
+              <span class="userName ml-3">
+                Chat room
+              </span>
+              <span class="float-right text-center menuBtn text-green">
+                <i class="fa fa-bars fa-2x"></i>
+              </span>
+            </div>
+            <div class="mid-div">
+
+              <!-- <div class="row">
+                <div class="col-12">
+                  <div class="text-left h6"></div>
+                  <div class="left-box float-left">Hey, Father's Day is coming up..</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="left-box float-left">What are you getting.. Oh, oops sorry dude.</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="right-box float-right">Nah, it's cool.</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="right-box float-right">Well you should get your Dad a cologne. Here smell it. Oh wait! ...</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="left-box float-left">
+                    <div class="ellipsis one mx-1"></div>
+                    <div class="ellipsis two"></div>
+                    <div class="ellipsis three mx-1"></div>
+                  </div>
+                </div>
+              </div> -->
+
+            </div>
+            <div class="fot-div">
+              <input type="text" id="m" placeholder="Type a message...">
+              <div class="btn-outline-info sendBtn float-right">SEND</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- js link -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+  <script src="javascripts/bootstrap.min.js"></script>
+  <script src="javascripts/index.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+    $(function () {
+      var userName = "";
+      $("#m").attr("disabled", true);
+
+      function deleteHtmlTag(str) {
+        str = str.replace(/<[^>]+>|&[^>]+;/g, "").trim();
+        //去掉所有的html标签和&nbsp;之类的特殊符合
+        return str;
+      }
+
+
+      $(".startChatBtn").on('click', function () {
+        userName = $("#userName").val();
+        if (userName != "") {
+          $("#user").text(userName);
+          $("#m").attr("disabled", false);
+          socket.emit('newUser', userName);
+          $(".newUser-cover").fadeOut();
+          $(".newUser").fadeOut();
+        }
+      });
+
+      var socket = io();
+      $('.sendBtn').on('click', function () {
+        if (userName != "") {
+          var str = deleteHtmlTag($('#m').val());
+          socket.emit('addchat', str, userName);
+          $('#m').val('');
+          return false;
+        }
+      });
+      $("#m").keypress(function (event) {
+        if (event.which == 13) {
+          if (userName != "") {
+            var str = deleteHtmlTag($('#m').val());
+            socket.emit('addchat', str, userName);
+            $('#m').val('');
+            return false;
+            event.preventDefault();
+          }
+        }
+      });
+
+      socket.on('UserType', function (user, type) {
+        $('.mid-div').append(
+          '<div class="row">' +
+          '<div class="col-12 text-center text-green p-2">' + user + type + '</div>' +
+          '</div>'
+        );
+        var height = $('.mid-div')[0].scrollHeight;
+        $('.mid-div').animate({ scrollTop: height }, 200);
+      });
+
+
+      socket.on('updateUserList', function (data) {
+        $(".people").children().remove();
+        for (var key in data) {
+          $(".people").last().append(
+            '<li class="li active"><span>' + data[key].id + '</span></li>'
+          );
+          // console.log(data[key].socket);
+        }
+      });
+
+      socket.on('update', function (msg, user) {
+        $('.mid-div').append(
+          '<div class="row">' +
+          '<div class="col-12">' +
+          '<div class="text-left text-muted mt-2">' + user + '</div>' +
+          '<div class="left-box float-left">' + msg + '</div>' +
+          '</div>' +
+          '</div>'
+        );
+        var height = $('.mid-div')[0].scrollHeight;
+        $('.mid-div').animate({ scrollTop: height }, 200);
+      });
+
+      socket.on('updateMe', function (data, user) {
+        $('.mid-div').append(
+          '<div class="row">' +
+          '<div class="col-12">' +
+          '<div class="text-right text-green mt-2">' + user + '</div>' +
+          '<div class="right-box float-right">' + data + '</div>' +
+          '</div>' +
+          '</div>'
+        );
+        var height = $('.mid-div')[0].scrollHeight;
+        $('.mid-div').animate({ scrollTop: height }, 200);
+      });
+    });
+  </script>
+</body>
+
+</html>
