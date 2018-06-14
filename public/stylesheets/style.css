@@ -92,8 +92,7 @@ html,body{
     -webkit-box-shadow: 3px 6px 20px 0px rgba(153,153,153,1);
     -moz-box-shadow: 3px 6px 20px 0px rgba(153,153,153,1);
     box-shadow: 3px 6px 20px 0px rgba(153,153,153,1);
-    transition: .5s;
-    transform: translateY(0deg);
+    transition: all .5s linear;
 }
 
 .menuBtn,
@@ -116,8 +115,7 @@ html,body{
     -webkit-box-shadow: -3px 6px 20px 0px rgba(153,153,153,1);
     -moz-box-shadow: -3px 6px 20px 0px rgba(153,153,153,1);
     box-shadow: -3px 6px 20px 0px rgba(153,153,153,1);
-    transition: .5s;
-    transform: translateY(0deg);
+    transition:  all .5s linear;
 }
 
 .people-div{
@@ -306,18 +304,18 @@ html,body{
     }
     .message{
         /* display: none; */
-        z-index: 0;
-        width:  100%;
+        z-index: 1;
+        width:  calc(100%);
         height: calc(100vh - 20px);
         border-radius: 15px;
-        transform: rotateY(180deg);
         top: 10px;
         left: 0px;
         background: #ddeff1;
+        transform: scale(0.9);
     }
     .chat-box{
         z-index: 2;
-        width: 100%;
+        width:  calc(100%);
         height: calc(100vh - 20px);
         top: 10px;
         left: 0px;
