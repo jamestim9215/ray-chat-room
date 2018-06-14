@@ -93,6 +93,7 @@ html,body{
     -moz-box-shadow: 3px 6px 20px 0px rgba(153,153,153,1);
     box-shadow: 3px 6px 20px 0px rgba(153,153,153,1);
     transition: all .5s linear;
+    transform: scale(1);
 }
 
 .menuBtn,
@@ -116,6 +117,7 @@ html,body{
     -moz-box-shadow: -3px 6px 20px 0px rgba(153,153,153,1);
     box-shadow: -3px 6px 20px 0px rgba(153,153,153,1);
     transition:  all .5s linear;
+    transform: scale(1);
 }
 
 .people-div{
