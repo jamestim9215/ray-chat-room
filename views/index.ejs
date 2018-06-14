@@ -154,7 +154,7 @@
         if (userName != "") {
           var str = deleteHtmlTag($('#m').val());
           socket.emit('addchat', str, userName);
-          $('#m').val('');
+          if(str != "") $('#m').val('');
           return false;
         }
       });
@@ -162,7 +162,7 @@
         if (event.which == 13) {
           if (userName != "") {
             var str = deleteHtmlTag($('#m').val());
-            socket.emit('addchat', str, userName);
+            if(str != "") socket.emit('addchat', str, userName);
             $('#m').val('');
             return false;
             event.preventDefault();
@@ -216,6 +216,20 @@
         var height = $('.mid-div')[0].scrollHeight;
         $('.mid-div').animate({ scrollTop: height }, 200);
       });
+
+      socket.on('angel', function (msg) {
+        $('.mid-div').append(
+          '<div class="row">' +
+          '<div class="col-12">' +
+          '<div class="text-left text-muted mt-2">小天使</div>' +
+          '<div class="left-box float-left">' + msg + '</div>' +
+          '</div>' +
+          '</div>'
+        );
+        var height = $('.mid-div')[0].scrollHeight;
+        $('.mid-div').animate({ scrollTop: height }, 200);
+      });
+
     });
   </script>
 </body>
