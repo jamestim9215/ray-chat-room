@@ -139,7 +139,7 @@
 
 
       $(".startChatBtn").on('click', function () {
-        userName = $("#userName").val();
+        userName = deleteHtmlTag($("#userName").val());
         if (userName != "") {
           $("#user").text(userName);
           $("#m").attr("disabled", false);
