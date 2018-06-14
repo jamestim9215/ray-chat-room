@@ -153,8 +153,8 @@
       $('.sendBtn').on('click', function () {
         if (userName != "") {
           var str = deleteHtmlTag($('#m').val());
-          socket.emit('addchat', str, userName);
-          if(str != "") $('#m').val('');
+          if(str != "")socket.emit('addchat', str, userName);
+           $('#m').val('');
           return false;
         }
       });
