@@ -77,12 +77,12 @@ var angelDo = function (data) {
   var mes = "";
   var len = angelData[data].length;
   var id = Math.floor((Math.random() * len));
-  if(len != 0){
+  if (len != 0) {
     mes = angelData[data][id];
-  }else{
-    
+  } else {
+
   }
-  
+
   return mes;
 }
 
@@ -127,8 +127,9 @@ app.io.sockets.on('connection', function (socket) {
 
     for (var key in angelData) {
       if (key == data) {
-        socket.broadcast.emit('angel', angelDo(key));
-        socket.emit('angel', angelDo(key));
+        var angelmes = angelDo(key)
+        socket.broadcast.emit('angel', angelmes);
+        socket.emit('angel', angelmes);
 
         break;
       }
